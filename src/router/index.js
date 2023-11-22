@@ -1,21 +1,64 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import AboutViewVue from '../views/AboutView.vue'
+import { useUserStore } from '@/stores/user'
 
 const routes = [
   {
+    name: 'home',
     path: '/',
-    component: HomeView
+    component: () => import('@/views/HomeView.vue'),
+    meta: {
+      title: 'home',
+      guard: false
+    }
   },
   {
+    name: 'about',
     path: '/about',
-    component: AboutViewVue
+    component: () => import('@/views/AboutView.vue'),
+    meta: {
+      title: 'about',
+      guard: false
+    }
+  },
+  {
+    name: 'manage',
+    path: '/manage',
+    component: () => import('@/views/ManageView.vue'),
+    meta: {
+      title: 'manage',
+      guard: true
+    }
+  },
+  {
+    name: '404',
+    path: '/:catchAll(.*)',
+    component: () => import('@/views/404View.vue'),
+    meta: {
+      title: '404',
+      guard: false
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
+  routes: routes,
+  linkExactActiveClass: 'text-amber-500'
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = String(to.meta.title).toUpperCase()
+  const userStore = useUserStore()
+
+  if (!to.meta.guard) next()
+
+  if (userStore.isLoggedIn) {
+    next()
+  } else {
+    next({
+      name: 'home'
+    })
+  }
 })
 
 export default router

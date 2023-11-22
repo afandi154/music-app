@@ -27,13 +27,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function login() {
-    try {
-      await getUserData(auth.currentUser.uid)
-    } catch (error) {
-      isLoggedIn.value = false
-      console.error(error)
-      return
-    }
     isLoggedIn.value = true
   }
 

@@ -1,10 +1,10 @@
 <template>
-  <app-header />
+  <app-header v-if="$route.name !== '404'" />
 
   <router-view></router-view>
 
   <!-- Player -->
-  <div class="fixed bottom-0 left-0 bg-white px-4 py-2 w-full">
+  <div v-if="$route.name !== '404'" class="fixed bottom-0 left-0 bg-white px-4 py-2 w-full">
     <!-- Track Info -->
     <div class="text-center">
       <span class="song-title font-bold">Song Title</span> by
@@ -41,13 +41,23 @@
 import AppHeader from '@/components/AppHeader.vue'
 import AppAuth from '@/components/AppAuth.vue'
 import { useUserStore } from '@/stores/user'
-import { onMounted } from 'vue'
+import { onBeforeMount } from 'vue'
 import { auth } from './includes/firebase'
 import { RouterView } from 'vue-router'
 
 const userStore = useUserStore()
 
-onMounted(() => {
-  if (auth.currentUser) userStore.login()
+onBeforeMount(async () => {
+  if (auth.currentUser) {
+    userStore.login()
+
+    try {
+      await userStore.getUserData(auth.currentUser.uid)
+    } catch (error) {
+      userStore.logout()
+      console.error({ error })
+      return
+    }
+  }
 })
 </script>

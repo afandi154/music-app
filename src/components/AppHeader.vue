@@ -3,7 +3,12 @@
   <header id="header" class="bg-gray-700">
     <nav class="container mx-auto flex justify-between items-center py-5 px-4">
       <!-- App Name -->
-      <router-link class="text-white font-bold uppercase text-2xl" to="/">Music</router-link>
+      <router-link
+        class="text-white font-bold uppercase text-2xl"
+        :to="{ name: 'home' }"
+        exact-active-class="no-active"
+        >{{ $route.name === 'home' ? 'My Music' : 'Home' }}</router-link
+      >
 
       <div class="items-center">
         <!-- Primary Navigation -->
@@ -18,7 +23,7 @@
               >
             </li>
             <li>
-              <router-link class="px-2 text-white" to="/about">About</router-link>
+              <router-link class="px-2 text-white" :to="{ name: 'about' }">About</router-link>
             </li>
           </template>
           <template v-else>
@@ -28,10 +33,10 @@
               </span>
             </li>
             <li>
-              <a class="px-2 text-white" href="#">Manage</a>
+              <router-link class="px-2 text-white" :to="{ name: 'manage' }">Manage</router-link>
             </li>
             <li @click.prevent="userStore.logout()">
-              <span class="px-2 text-white hover:cursor-pointer">Logout</span>
+              <span class="px-2 text-white hover:cursor-pointer hover:text-amber-500">Logout</span>
             </li>
           </template>
         </ul>
