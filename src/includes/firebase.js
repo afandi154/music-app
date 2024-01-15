@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore, doc } from 'firebase/firestore'
+import { getFirestore, doc, collection } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBIsodigiw4PfutY6AXal7_QczbCIlmA2k',
@@ -16,7 +17,9 @@ const app = initializeApp(firebaseConfig)
 
 const auth = getAuth()
 const db = getFirestore(app)
+const storage = getStorage(app)
 
 const usersCollection = (uid) => doc(db, 'users', uid)
+const songsCollection = () => collection(db, 'songs')
 
-export { auth, db, usersCollection }
+export { auth, db, storage, usersCollection, songsCollection }
