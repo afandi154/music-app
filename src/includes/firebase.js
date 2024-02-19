@@ -21,5 +21,6 @@ const storage = getStorage(app)
 
 const usersCollection = (uid) => doc(db, 'users', uid)
 const songsCollection = () => collection(db, 'songs')
+const songsDoc = (sid) => doc(db, 'songs', sid)
 
-export { auth, db, storage, usersCollection, songsCollection }
+export { auth, db, storage, usersCollection, songsCollection, songsDoc }

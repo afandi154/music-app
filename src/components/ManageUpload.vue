@@ -20,7 +20,7 @@
         >Or Choose Files</label
       >
       <input
-        class="block w-full text-sm border border-blue-300 rounded-lg cursor-pointer bg-gray-50 p-1.5 mt-0 focus:outline-none"
+        class="block w-full text-sm border border-gray-400 rounded-lg cursor-pointer bg-gray-50 p-1.5 mt-0 focus:outline-none"
         id="multiple_files"
         type="file"
         multiple
@@ -80,8 +80,9 @@ function onDrop(event) {
     if (file.type !== 'audio/mpeg') {
       return
     } else {
+      const time = new Date().getTime()
       const storageRef = refs(storage) //music-app-a9380.appspot.com
-      const songsRef = refs(storageRef, `songs/${file.name}`) //music-app-a9380.appspot.com/songs/filename.mp3
+      const songsRef = refs(storageRef, `songs/${auth.currentUser.uid}/${time}_${file.name}`) //music-app-a9380.appspot.com/songs/filename.mp3
 
       const task = uploadBytesResumable(songsRef, file)
 
@@ -113,11 +114,12 @@ function onDrop(event) {
         // Success
         async () => {
           const song = {
+            sid: time,
             uid: auth.currentUser.uid,
-            email: auth.currentUser.email,
-            original_name: task.snapshot.ref.name,
-            modified_name: task.snapshot.ref.name,
+            original_name: file.name,
+            modified_name: file.name,
             genre: '',
+            artist: '',
             comment_count: 0
           }
           song.download_url = await getDownloadURL(task.snapshot.ref)
