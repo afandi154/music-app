@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { deleteDoc, updateDoc } from 'firebase/firestore'
 import { songsDoc, storage } from '@/includes/firebase'
 import { deleteObject, ref as refs } from 'firebase/storage'

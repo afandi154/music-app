@@ -30,6 +30,15 @@ const routes = [
     }
   },
   {
+    name: 'song',
+    path: '/song/:id',
+    component: () => import('@/views/SongView.vue'),
+    meta: {
+      title: 'song',
+      guard: true
+    }
+  },
+  {
     name: '404',
     path: '/:catchAll(.*)',
     component: () => import('@/views/404View.vue'),

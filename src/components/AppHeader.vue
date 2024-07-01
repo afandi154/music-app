@@ -3,13 +3,9 @@
   <header id="header" class="bg-gray-700">
     <nav class="container mx-auto flex justify-between items-center py-5 px-4">
       <!-- App Name -->
-      <router-link
-        class="text-white font-bold uppercase text-2xl"
-        :to="{ name: 'home' }"
-        exact-active-class="no-active"
-        >{{ $route.name === 'home' ? 'My Music' : 'Home' }}</router-link
-      >
-
+      <router-link class="text-white font-bold uppercase text-2xl" :to="{ name: 'home' }">{{
+        $route.name === 'home' ? 'My Music' : 'Home'
+      }}</router-link>
       <div class="items-center">
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
@@ -47,7 +43,7 @@
 
 <script setup>
 import { useModalStore } from '@/stores/modal'
-import { useUserStore } from '../stores/user'
+import { useUserStore } from '@/stores/user'
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 

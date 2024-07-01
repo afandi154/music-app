@@ -31,8 +31,8 @@
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
-        <div class="flex items-center gap-2 font-bold text-sm mb-1" :class="upload.class">
-          <i :class="upload.icon"></i><span class="">{{ upload.name }}</span>
+        <div class="flex items-center gap-3 font-bold text-sm mb-1" :class="upload.class">
+          <i :class="upload.icon"></i><span>{{ upload.name }}</span>
         </div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <!-- Inner Progress Bar -->
@@ -42,6 +42,10 @@
             :style="{ width: `${upload.progress}%` }"
           ></div>
         </div>
+
+        <span v-if="upload.message" class="text-sm" :class="upload.class">{{
+          upload.message
+        }}</span>
       </div>
     </div>
   </div>
@@ -57,6 +61,7 @@ import { addDoc } from 'firebase/firestore'
 const emit = defineEmits(['upload'])
 const isDragOver = ref(false)
 const uploads = ref([])
+const warningMessage = ref('')
 
 function onDragOver(event) {
   event.preventDefault()
@@ -100,14 +105,25 @@ function onDrop(event) {
         'state_changed',
         // On Progress
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          if (file.size < 26 * 1024 * 1024) {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
 
-          uploads.value[uploadIndex].progress = progress
+            uploads.value[uploadIndex].progress = progress
+          } else {
+            task.cancel()
+            uploads.value[uploadIndex].icon = 'fas fa-exclamation'
+            uploads.value[uploadIndex].variant = 'bg-red-400'
+            uploads.value[uploadIndex].class = 'text-red-400'
+            uploads.value[uploadIndex].message = "File size can't exceeds more than 25MB"
+
+            return
+          }
         },
         // Error
         (error) => {
-          console.warn(error)
-          uploads.value[uploadIndex].icon = 'fas fa-xmark'
+          console.error(error)
+
+          uploads.value[uploadIndex].icon = 'fas fa-exclamation'
           uploads.value[uploadIndex].variant = 'bg-red-400'
           uploads.value[uploadIndex].class = 'text-red-400'
         },

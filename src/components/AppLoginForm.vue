@@ -32,10 +32,10 @@
     </div>
     <button
       type="submit"
-      class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
+      class="block w-full bg-purple-600 text-white py-2 px-3 mt-7 rounded transition hover:bg-purple-700"
       :disabled="alert.login_in_submission"
     >
-      Submit
+      Login
     </button>
   </vee-form>
 </template>

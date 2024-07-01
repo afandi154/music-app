@@ -35,6 +35,7 @@ export const useUserStore = defineStore('user', () => {
 
     isLoggedIn.value = false
     userData.value = null
+    window.location.reload()
   }
 
   async function getUserData(uid) {
