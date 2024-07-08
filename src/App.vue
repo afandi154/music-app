@@ -1,7 +1,13 @@
 <template>
   <app-header v-if="$route.name && $route.name !== '404'" />
 
-  <router-view></router-view>
+  <router-view v-slot="{ Component }">
+    <Transition name="fade" mode="out-in">
+      <div :key="$route.name">
+        <component :is="Component"></component>
+      </div>
+    </Transition>
+  </router-view>
 
   <!-- Player -->
   <player />
@@ -34,3 +40,19 @@ onBeforeMount(async () => {
   }
 })
 </script>
+<style>
+.fade-enter-from {
+  opacity: 0;
+  transform: translateX(100dvw);
+}
+
+.fade-enter-active {
+  transition: all 0.15s linear;
+}
+
+.fade-leave-to {
+  transition: all 0.15s linear;
+  transform: translateX(-100dvw);
+  opacity: 0;
+}
+</style>
